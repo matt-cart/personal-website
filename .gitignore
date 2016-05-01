@@ -1,0 +1,5 @@
+*pyc
+venv/
+config/
+node_modules/
+bower_components/
