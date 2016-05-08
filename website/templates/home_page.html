@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container-fluid" id="main-div">
+        <div class="row">
+            <div class="jumbotron col-md-6 col-md-offset-1" id="jumbotron">
+                <h2>Recent Posts</h2>
+                {% for post in recent_posts %}
+                    <h3><a class="home-page-link" href="{{ url_for('getBlogPost', post_path=post.url_path) }}">{{ post.title }}</a></h3>
+                    <p>{{ post.preview }}<br>{{ post.date }}</p>
+                {% endfor %}
+            </div>
+            <div class="jumbotron col-md-3 col-md-offset-1 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3" id="jumbotron">
+                <img id="mugshot" src="{{ url_for('static', filename='img/mugshot_website.png') }}">
+                <h3>About me</h3>
+                <p>
+                    Currently, I am a bioinformatician at <a class="home-page-link" href="http://cariboubio.com">Caribou Biosciences</a> in Berkeley, CA. I graduated from Cornell University in 2014 with a degree in Bioengineering.
+                </p>
+                <p>
+                    <a href="https://github.com/matt-cart" target="_blank" class="btn btn-social-icon btn-github">
+                        <i class="fa fa-github"></i>
+                    </a>
+                    <a href="https://instagram.com/mattcarter/" target="_blank" class="btn btn-social-icon btn-instagram">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/pub/matthew-carter/45/867/a3" target="_blank" class="btn btn-social-icon btn-linkedin">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

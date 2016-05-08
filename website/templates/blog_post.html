@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Matt Carter{% endblock %}
+{% block content %}
+<div class="container-fluid" id="main-div">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 col-sm-12 bump-past-nav">
+            <h1>{{ title }}</h1>
+            <h5 class="color-grey">{{ date }}</h5>
+            {{ content|safe }}
+            {% if post_button %}
+                <div class="form-group pull-right">
+                    <a class="btn btn-primary" href="{{ url_for('publishPost', post_id=post_id) }}">Publish</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
