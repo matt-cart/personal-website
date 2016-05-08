@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container-fluid bump-past-nav">
+        <div class="row">
+            <div class="jumbotron col-md-6 col-md-offset-3" id="jumbotron-posts">
+                <h2>Admin Panel</h2>
+                <a class="btn btn-sm btn-default" href="{{ url_for('postEditor') }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> New Post</a>
+                <h4>Staged Posts</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">ID</th>
+                            <th class="col-md-6">Title</th>
+                            <th class="col-md-2">Date</th>
+                            <th class="col-md-1">Edit</th>
+                            <th class="col-md-1">Preview</th>
+                            <th class="col-md-1">Publish</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                            {% if post.status == 'staged' %}
+                                <tr>
+                                    <td>{{ post.id }}</td>
+                                    <td>{{ post.title }}</td>
+                                    <td>{{ post.date }}</td>
+                                    <td><a class="btn btn-xs btn-primary" href="{{ url_for('postEditor', post_id=post.id) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+                                    <td><a class="btn btn-xs btn-warning" href="{{ url_for('preview-post', post_path=post.url_path) }}"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></td>
+                                    <td><a class="btn btn-xs btn-success" href="{{ url_for('publishPost', post_id=post.id) }}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h4>Published Posts</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">ID</th>
+                            <th class="col-md-6">Title</th>
+                            <th class="col-md-2">Date</th>
+                            <th class="col-md-1">Comments</th>
+                            <th class="col-md-1">Edit</th>
+                            <th class="col-md-1">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                            {% if post.status == 'published' %}
+                                <tr>
+                                    <td>{{ post.id }}</td>
+                                    <td>{{ post.title }}</td>
+                                    <td>{{ post.date }}</td>
+                                    <td>{{ post.num_comments }}</td>
+                                    <td><a class="btn btn-xs btn-primary" href="{{ url_for('postEditor', post_id=post.id) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+                                    <td><a class="btn btn-xs btn-info" href="{{ url_for('getBlogPost', post_path=post.url_path) }}" target="_blank"><span class="glyphicon glyphicon-share" aria-hidden="true"></span></a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -8,7 +8,7 @@ from flask.ext.login import login_required, login_user, logout_user, current_use
 
 
 def parseDate(sql_date):
-    date_object = datetime.strptime(sql_date.split(' ')[0], '%Y-%m-%d')
+    date_object = datetime.strptime(str(sql_date).split(' ')[0], '%Y-%m-%d')
     return date_object.strftime('%B %d, %Y')
 
 
@@ -20,7 +20,7 @@ def parsePostQuery(posts):
         text_preview = ''.join(html_text)[:200] + '...'
         post_previews.append({'title': post.title,
                               'preview': text_preview,
-                              'date': parseDate(str(post.date)),
+                              'date': parseDate(post.date),
                               'url_path': post.url_path})
     return post_previews
 
@@ -57,7 +57,7 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                return render_template('post_editor.html')
+                return redirect(url_for('adminPanel'))
     else:
         return render_template("login.html")
 
@@ -81,31 +81,69 @@ def blogArchive():
                            posts=posts)
 
 
-@app.route('/editor')
+@app.route('/admin')
 @login_required
-def postEditor():
-    return render_template('post_editor.html')
+def adminPanel():
+    posts = []
+    for post in Post.query.order_by(Post.id.desc()).all():
+        posts.append({
+            'id': post.id,
+            'title': post.title,
+            'status': post.status,
+            'date': parseDate(post.date),
+            'num_comments': len(post.comments),
+            'url_path': post.url_path})
+    return render_template('admin_page.html',
+                           posts=posts)
+
+
+@app.route('/editor')
+@app.route('/editor/<post_id>')
+@login_required
+def postEditor(post_id=None):
+    if not post_id:
+        return render_template('post_editor.html',
+                               post_id=post_id,
+                               title='',
+                               url_path='',
+                               content='')
+    else:
+        entry = Post.query.filter(Post.id == post_id).first()
+        return render_template('post_editor.html',
+                               post_id=post_id,
+                               title=entry.title,
+                               url_path=entry.url_path,
+                               content=entry.content)
 
 
 @app.route('/submit', methods=['POST'])
 def submitPost():
+    post_id = request.form['post-id']
     title = request.form['post-title']
     url_path = request.form['url-path']
     content = request.form['post-content']
-    p = Post(title=title,
-             url_path=url_path,
-             content=content)
-    db.session.add(p)
+    entry = Post.query.filter(Post.id == post_id).first()
+    if entry:
+        entry.title = title
+        entry.url_path = url_path
+        entry.content = content
+        entry.status = 'staged'
+    else:
+        p = Post(title=title,
+                 url_path=url_path,
+                 content=content)
+        db.session.add(p)
     db.session.commit()
     return redirect(url_for('preview-post', post_path=url_path))
 
 
 @app.route('/publish/<post_id>')
+@login_required
 def publishPost(post_id=None):
     entry = Post.query.filter(Post.id == post_id).first()
     entry.status = 'published'
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('getBlogPost', post_path=entry.url_path))
 
 
 @app.route('/post/<post_path>')
@@ -121,9 +159,14 @@ def getBlogPost(post_path=None):
     return render_template('blog_post.html',
                            post_id=post_id,
                            title=entry.title,
-                           date=parseDate(str(entry.date)),
+                           date=parseDate(entry.date),
                            content=md_content,
                            post_button=post_button)
+
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return render_template('login.html')
 
 
 @app.errorhandler(404)

@@ -8,7 +8,8 @@
             <h5 class="color-grey">{{ date }}</h5>
             {{ content|safe }}
             {% if post_button %}
-                <div class="form-group pull-right">
+                <div class="form-group text-center">
+                    <a class="btn btn-default" href="{{ url_for('adminPanel') }}">Admin Panel</a>
                     <a class="btn btn-primary" href="{{ url_for('publishPost', post_id=post_id) }}">Publish</a>
                 </div>
             {% endif %}
