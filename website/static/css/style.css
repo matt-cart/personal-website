@@ -1,0 +1,86 @@
+.bump-past-nav {
+    margin-top:50px;
+}
+
+
+.home-page-link:hover, .home-page-link:visited, .home-page-link:active{
+    color:#000;
+}
+
+.home-page-link {
+    color:#7e7e7e;
+}
+
+a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}
+
+.color-grey {
+    color:#777;
+}
+
+.no-margin {
+    margin:0px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    font-size:1.3em;
+    color:#939393;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color:#f1f1f1;
+    color:#939393;
+}
+
+#name-link:hover {
+   text-decoration: none;
+}
+
+.navbar-default {
+    background-color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.8);
+}
+
+.bump-down-20 {
+        padding-top:20px;
+}
+
+#first-name {
+        color:#939393;
+        font-size:2.2em;
+}
+
+#last-name {
+        color:#7e7e7e;
+        font-size:2.2em;
+}
+
+
+#main-div {
+        padding-right:7%;
+        background-color: rgba(255,255,255,0);
+}
+
+#jumbotron {
+        margin-top:10%;
+        padding:20px;
+}
+
+.jumbotron {
+        background: rgba(49, 49, 49, 0.03);
+}
+
+.jumbotron > p {
+        font-size:1em;
+}
+
+
+#jumbo-link:hover {
+        color:#717171;
+}
+
+#mugshot {
+    max-width: 50%;
+    margin-left:25%
+}
