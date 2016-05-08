@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container-fluid bump-past-nav">
         <div class="row">
-            <div class="jumbotron col-md-6 col-md-offset-1" id="jumbotron">
+            <div class="jumbotron col-md-6 col-md-offset-1" id="jumbotron-posts">
                 <h2>Recent Posts</h2>
                 {% for post in recent_posts %}
                     <h3><a class="home-page-link" href="{{ url_for('getBlogPost', post_path=post.url_path) }}">{{ post.title }}</a></h3>
@@ -11,7 +11,7 @@
                 {% endfor %}
                 <a class="home-page-link" href="{{ url_for('blogArchive')}}"><h5>See more...</h5></a>
             </div>
-            <div class="jumbotron col-md-3 col-md-offset-1 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3" id="jumbotron">
+            <div class="jumbotron col-md-3 col-md-offset-1 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3" id="jumbotron-me">
                 <img id="mugshot" src="{{ url_for('static', filename='img/mugshot_website.png') }}">
                 <h3>About me</h3>
                 <p>
