@@ -2,7 +2,7 @@ import markdown
 from BeautifulSoup import BeautifulSoup
 from datetime import datetime
 from website import app, db, login_manager, bcrypt
-from website.models import Post, User
+from website.models import Post, User, Comment
 from flask import render_template, request, url_for, redirect
 from flask.ext.login import login_required, login_user, logout_user, current_user
 
@@ -76,7 +76,7 @@ def logout():
 
 @app.route('/blog')
 def blogArchive():
-    posts = parsePostQuery(Post.query.order_by(Post.id.desc()).all())
+    posts = parsePostQuery(Post.query.filter(Post.status == 'published').order_by(Post.id.desc()).all())
     return render_template('blog_archive.html',
                            posts=posts)
 
@@ -156,12 +156,32 @@ def getBlogPost(post_path=None):
         post_button = True
     else:
         post_button = False
+    comments = []
+    for comment in entry.comments:
+        comments.append({'name': comment.name,
+                         'comment': comment.comment,
+                         'date': parseDate(comment.date)})
     return render_template('blog_post.html',
                            post_id=post_id,
                            title=entry.title,
                            date=parseDate(entry.date),
                            content=md_content,
-                           post_button=post_button)
+                           post_button=post_button,
+                           comments=comments)
+
+
+@app.route('/comment', methods=['POST'])
+def addComment():
+    post_id = request.form['post-id']
+    name = request.form['commenter-name']
+    comment = request.form['comment-content']
+    c = Comment(post_id=post_id,
+                name=name,
+                comment=comment)
+    db.session.add(c)
+    db.session.commit()
+    post_path = Post.query.filter(Post.id == post_id).first().url_path
+    return redirect(url_for('getBlogPost', post_path=post_path))
 
 
 @app.errorhandler(401)

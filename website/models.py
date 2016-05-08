@@ -22,6 +22,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     name = db.Column(db.String(255))
     comment = db.Column(db.Text)
+    date = db.Column(db.DateTime, default=db.func.current_timestamp())
 
 
 class User(db.Model):

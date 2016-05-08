@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Matt Carter{% endblock %}
 {% block content %}
-<div class="container-fluid bump-past-nav">
+<div class="container-fluid">
     <div class="row">
-        <div class="jumbotron col-md-8 col-md-offset-2" id="jumbotron">
+        <div class="col-md-8 col-md-offset-2 color-white blog-post">
             <h2>Blog Archives</h2>
             {% for post in posts %}
                 <h3><a class="home-page-link" href="{{ url_for('getBlogPost', post_path=post.url_path) }}">{{ post.title }}</a></h3>
