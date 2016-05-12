@@ -81,3 +81,17 @@ a:active {
 .bump-down-20 {padding-top:20px;}
 
 .blog-post {margin-bottom:20px; margin-top:90px}
+
+.codehilitetable {
+    width:100%;
+}
+
+pre {
+    font-size:0.86em;
+}
+
+div.linenodiv > pre {
+    padding-right:5px;
+    padding-left:0px;
+    text-align: right;
+}

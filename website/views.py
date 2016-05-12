@@ -150,7 +150,8 @@ def publishPost(post_id=None):
 @app.route('/preview/<post_path>', endpoint='preview-post')
 def getBlogPost(post_path=None):
     entry = Post.query.filter(Post.url_path == post_path).first()
-    md_content = markdown.markdown(entry.content, ['codehilite'])
+    ext_dict = {'codehilite': {'linenums': True}}
+    md_content = markdown.markdown(entry.content, ['codehilite'], extension_configs=ext_dict)
     post_id = entry.id
     if entry.status == 'staged':
         post_button = True
